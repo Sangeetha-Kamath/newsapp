@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:newsapp/screens/detail/view/detail_screen.dart';
 
@@ -31,24 +32,24 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+         
           children: [
            const  SearchWidget(),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: SingleChildScrollView(
-                  child: Consumer<HomeScreenProvider>(
-                    builder: (context, provider, _) {
-                    return FutureBuilder(
-                        future: provider.fetchNews(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor));
-                          } else if (snapshot.hasError) {
-                            return const Center(child: Text(ErrorConstants.somethingWrong));
-                          } else if(snapshot.hasData &&(snapshot.data?.isNotEmpty??false)){
-                            return ListView.builder(
+                child: Consumer<HomeScreenProvider>(
+                  builder: (context, provider, _) {
+                  return FutureBuilder(
+                      future: provider.fetchNews(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor));
+                        } else if (snapshot.hasError) {
+                          return const Center(child: Text(ErrorConstants.somethingWrong));
+                        } else if(snapshot.hasData &&(snapshot.data?.isNotEmpty??false)){
+                          return SingleChildScrollView(
+                            child: ListView.builder(
                               itemCount: provider.allNews.length,
                               controller: provider.sc,
                                shrinkWrap: true,
@@ -73,17 +74,20 @@ class HomeScreen extends StatelessWidget {
                                   onTapped:(article){provider.onBookMarkTapped(article);}),
                                 );
                               },
-                            );
-                          }else{
-                            return const Align(
-                              alignment:Alignment.center,
-                              
-                              child:Text(ErrorConstants.noData,
-                              textAlign:TextAlign.center));
-                          }
-                        });
-                    },
-                  ),
+                            ),
+                          );
+                        }else{
+                          return  Align(
+                            alignment:Alignment.center,
+                            
+                            child:Text(ErrorConstants.noData,
+                            style:GoogleFonts.poppins(color:AppColors.black,
+                            fontWeight:FontWeight.w400,
+                            fontSize:20),
+                            textAlign:TextAlign.center));
+                        }
+                      });
+                  },
                 ),
               ),
             ),

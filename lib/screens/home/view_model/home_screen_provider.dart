@@ -15,7 +15,7 @@ class HomeScreenProvider extends ChangeNotifier {
   List<Articles> newsTableData = [];
   int totalResults = 0;
   int page = 1;
-  int totalPage = 0;
+  
   TextEditingController searchController = TextEditingController();
   FocusNode searchFocusNode = FocusNode();
 
@@ -27,9 +27,9 @@ class HomeScreenProvider extends ChangeNotifier {
 
     sc.addListener(() {
       if (sc.position.pixels == sc.position.maxScrollExtent) {
-        if(page<=totalPage) {
+        
           fetchNews();
-        }
+        
       }
     });
     notifyListeners();
@@ -40,7 +40,7 @@ class HomeScreenProvider extends ChangeNotifier {
     
     page=1;
     allNews = [];
-    totalPage=0;
+    
    
     notifyListeners();
   }
@@ -48,6 +48,7 @@ class HomeScreenProvider extends ChangeNotifier {
   Future<List<Articles>> fetchArticleFromTable() async {
     
     newsTableData = await _sqliteService.getItems();
+   
   
 
     return newsTableData;
@@ -61,7 +62,7 @@ class HomeScreenProvider extends ChangeNotifier {
       final response =
           await ApiService().newsList(ApiCostants.pgeSize, page.toString(), searchController.text);
       totalResults = response.totalResults ?? 0;
-      totalPage++;
+     
       newNews = response.articles ?? [];
 
       allNews.addAll(newNews);

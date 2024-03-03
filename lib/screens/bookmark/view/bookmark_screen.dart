@@ -29,10 +29,11 @@ var providerData = Provider.of<HomeScreenProvider>(context, listen: false);
        int result=  await  sqliteService.deleteItem(providerData.newsTableData[index].title??"");
        if(result == 1){
         List<Articles> extList = providerData.newsTableData;
-
+        providerData.notifyListeners();
 
         extList.removeWhere((element)=>element.title == providerData.newsTableData[index].title);
         providerData.newsTableData = extList;
+        
         
 
        }else{
@@ -65,23 +66,25 @@ var providerData = Provider.of<HomeScreenProvider>(context, listen: false);
         padding:const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+         
           children: [
            
             Expanded(
+             
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: SingleChildScrollView(
-                  child: Consumer<HomeScreenProvider>(
-                    builder: (context, provider, _) {
-                    return FutureBuilder(
-                        future: provider.fetchArticleFromTable(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor));
-                          } else if (snapshot.hasError) {
-                            return const Center(child: Text(ErrorConstants.somethingWrong));
-                          } else if(snapshot.hasData &&(snapshot.data?.isNotEmpty??false)) {
-                            return ListView.builder(
+                child: Consumer<HomeScreenProvider>(
+                  builder: (context, provider, _) {
+                  return FutureBuilder(
+                      future: provider.fetchArticleFromTable(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator(color: AppColors.primaryColor));
+                        } else if (snapshot.hasError) {
+                          return const Center(child: Text(ErrorConstants.somethingWrong));
+                        } else if(snapshot.hasData &&(snapshot.data?.isNotEmpty??false)) {
+                          return SingleChildScrollView(
+                            child: ListView.builder(
                               itemCount: provider.newsTableData.length,
                               controller: provider.sc,
                               cacheExtent: 50,
@@ -100,18 +103,22 @@ var providerData = Provider.of<HomeScreenProvider>(context, listen: false);
                                   onTapped: (){}, ),
                                 );
                               },
-                            );
-                          }
-                          else{
-                             return const Align(
-                              alignment:Alignment.center,
-                              
-                              child:Text(ErrorConstants.noData,
-                              textAlign:TextAlign.center));
-                          }
-                        });
-                    },
-                  ),
+                            ),
+                          );
+                        }
+                        else{
+                           return Align(
+                            alignment:Alignment.center,
+                            
+                            child:Text(
+                              ErrorConstants.noItem,
+                            style:GoogleFonts.poppins(color:AppColors.black,
+                            fontWeight:FontWeight.bold,
+                            fontSize:18),
+                            textAlign:TextAlign.center));
+                        }
+                      });
+                  },
                 ),
               ),
             ),

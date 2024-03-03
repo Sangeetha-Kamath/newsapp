@@ -37,7 +37,7 @@ class NewsDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image
+            
             imageUrl.isNotEmpty
                 ? Image.network(imageUrl)
                 :const  SizedBox.shrink(),
@@ -68,6 +68,7 @@ class NewsDetailsScreen extends StatelessWidget {
                 url,
                 style: GoogleFonts.poppins(fontSize:18,
                 decoration:TextDecoration.underline,
+               decorationColor:AppColors.primaryColor,
                 color:AppColors.primaryColor,
                 fontWeight:FontWeight.bold)
                            ),
