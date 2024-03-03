@@ -5,7 +5,7 @@ class AppConstants{
   static const String enjoyFeed ="Welcome aboard to your daily dose of news!";
   static const String removeFromBookmark = "Remove from bookmark list";
   static const String newsApp = "News App";
-   static const String loginScreen = "Login Screen";
+   static const String loginScreen = "Login";
    static const String isAuthorized = "isAuthorized";
    static const String user = "user";
   
